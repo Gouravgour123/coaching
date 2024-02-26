@@ -10,7 +10,7 @@ const registration = async (req,res)=>{
         return res.status(404).send({success:false, message:"email is already exist"})
     }
     const newuser = await userModels.create({...req.body});
-    res.status(200).send({success:true,message:"registration succesfully",data:newuser})
+    res.status(200).send({success:true,message:"Registration succesfully",data:newuser})
 }
 
 

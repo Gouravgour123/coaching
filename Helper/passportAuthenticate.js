@@ -1,38 +1,21 @@
 
-const secretKey = 'gour';
-
-const passport = require('passport');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-
-
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: secretKey
+const verifyToken = async (req, res, next) => {
+  try {
+    let token = req.header("Authorization");
+    if (!token) {
+      return res
+        .status(400)
+        .send({ success: false, message: "token not found" });
+    }
+    let tokenV = token.split(" ")[1];
+    var decoded = jwt.verify(tokenV, "gour");
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res
+      .status(500)
+      .send({ success: false, message: "Crashed", message: error.message });
+  }
 };
 
-passport.use(
-  new JwtStrategy(jwtOptions, (payload, done) => {
-    return done(null, payload.user);
-  })
-);
-
-  function verifyToken(req, res, next) {
-    passport.authenticate('jwt', { session: false }, (err, user, info) => {
-      if (err) {
-        return res.status(401).json({ message: 'Invalid token' });
-      }
-      
-      if (!user) {
-        return res.status(401).json({ message: 'Token not provided or invalid' });
-      }
-  
-      req.user = user;
-      next();
-    })(req, res, next);
-  }
-
-
-  
-
-  module.exports = verifyToken
+module.exports =  verifyToken ;

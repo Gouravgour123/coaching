@@ -13,7 +13,7 @@ const PostSchema = new mongoose.Schema({
     longitude: Number
   }
 });
-const post =  mongoose.model('Post', PostSchema);
+const post =  mongoose.model("Post", PostSchema);
 
 
 module.exports ={post}

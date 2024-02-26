@@ -1,10 +1,11 @@
 
-const passport = require('passport');
+// const passport = require('passport');
+const jwt = require('jsonwebtoken')
 const { post } = require('../Models/postModel');
 
 const createPost = async (req, res) => {
   try {
-    const newPost = new post({
+    const newpost = new post({
       title: req.body.title,
       body: req.body.body,
       createdBy: req.user._id,
@@ -15,7 +16,7 @@ const createPost = async (req, res) => {
       }
     });
 
-    const savedPost = await newPost.save();
+    const savedPost = await newpost.save();
     res.status(201).json(savedPost);
   } catch (err) {
     res.status(500).json({ message: 'Internal Server Error' });
